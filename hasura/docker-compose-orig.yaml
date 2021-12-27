@@ -29,7 +29,7 @@ services:
     volumes:
       - ./app:/app
       - ./custom:/opt/src/hasura/app/custom
-      - ./storage:/export
+      - ${STORAGE_DIR}:/export
     ports:
       - '8091:8091'
   postgres:
@@ -39,7 +39,7 @@ services:
     environment:
       POSTGRES_PASSWORD: postgrespassword
     volumes:
-      - ./db:/var/lib/postgresql/data
+      - ${DATA_DIR}:/var/lib/postgresql/data
     ports:
       - '5433:5432'
   hasura:
@@ -93,8 +93,8 @@ services:
       - 4001:4001
       - 5001:5001
     volumes:
-      - ./ipfs:/data/ipfs
-      - ./storage:/export
+      - ${IPFS_DATA}:/data/ipfs
+      - ${STORAGE_DIR}:/export
   liquid:
     image: asoltys/liquid:latest
     container_name: liquid

@@ -1,0 +1,67 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -c
+    kompose.version: 1.26.0 (40646f47)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: lapp
+  name: lapp
+spec:
+  containers:
+    - env:
+        - name: CLOUDFLARE_TOKEN
+        - name: CLOUDFLARE_ZONE
+        - name: COINOS_TOKEN
+          value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJhcmV0b3NoaSIsImlhdCI6MTYzMDM1ODE2MX0._hCtzsXcagiWoUPa7m3Hn-HqRlXaMjI0xsIfppEn56U
+        - name: COINOS_URL
+          value: http://app:3119
+        - name: DOMAIN
+          value: localhost
+        - name: HASURA_JWT
+          value: '{"type": "HS256", "key": "25C134A00CF05C9BF583727A12778F52D0E7BD560D3A3ACF8E79127E9A56119D"}'
+        - name: HASURA_SECRET
+          value: http://hasura:8080
+        - name: HASURA_URL
+          value: http://hasura:8080
+        - name: HBP_URL
+          value: http://hbp:3000
+        - name: IPFS_URL
+          value: http://ipfs:5001
+        - name: IPFS_WEB_URL
+          value: http://ipfs:8080
+        - name: LIQUID_ELECTRS_URL
+          value: http://electrs-liquid:3002
+        - name: SERVER_URL
+        - name: SIGNING_SERVER_MNEMONIC
+          value: "actor plate kit job awful guilt myself reunion praise twenty exact firm"
+        - name: SMTP_HOST
+        - name: SMTP_PASS
+        - name: SMTP_PORT
+        - name: SMTP_SENDER
+        - name: SMTP_USER
+      image: asoltys/lnft-server
+      name: lapp
+      ports:
+        - containerPort: 8091
+      resources: {}
+      volumeMounts:
+        - mountPath: /app
+          name: lapp-claim0
+        - mountPath: /opt/src/hasura/app/custom
+          name: lapp-claim1
+        - mountPath: /export
+          name: lapp-claim2
+  restartPolicy: OnFailure
+  volumes:
+    - name: lapp-claim0
+      persistentVolumeClaim:
+        claimName: lapp-claim0
+    - name: lapp-claim1
+      persistentVolumeClaim:
+        claimName: lapp-claim1
+    - name: lapp-claim2
+      persistentVolumeClaim:
+        claimName: lapp-claim2
+status: {}

@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -c
+    kompose.version: 1.26.0 (40646f47)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: hbp
+  name: hbp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: hbp
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -c
+        kompose.version: 1.26.0 (40646f47)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: hbp
+    spec:
+      containers:
+        - env:
+            - name: AUTO_ACTIVATE_NEW_USERS
+              value: "true"
+            - name: AUTO_MIGRATE
+              value: "true"
+            - name: EMAILS_ENABLE
+              value: "true"
+            - name: HASURA_ENDPOINT
+              value: /v1/graphql
+            - name: HASURA_GRAPHQL_ADMIN_SECRET
+            - name: JWT_ALGORITHM
+              value: HS256
+            - name: JWT_KEY
+              value: 25C134A00CF05C9BF583727A12778F52D0E7BD560D3A3ACF8E79127E9A56119D
+            - name: LOST_PASSWORD_ENABLE
+              value: "true"
+            - name: MAX_REQUESTS
+              value: "10000"
+            - name: SERVER_URL
+            - name: SMTP_HOST
+            - name: SMTP_PASS
+            - name: SMTP_PORT
+            - name: SMTP_SENDER
+            - name: SMTP_USER
+            - name: STORAGE_ENABLE
+              value: "false"
+          image: nhost/hasura-backend-plus:v2.2.3
+          name: hbp
+          ports:
+            - containerPort: 3000
+          resources: {}
+          volumeMounts:
+            - mountPath: /app/custom
+              name: hbp-claim0
+      restartPolicy: Always
+      volumes:
+        - name: hbp-claim0
+          persistentVolumeClaim:
+            claimName: hbp-claim0
+status: {}
